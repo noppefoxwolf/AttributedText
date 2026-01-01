@@ -70,7 +70,7 @@ public struct TextView: UIViewRepresentable {
             context.environment.lineFragmentPadding ?? 0
         textView.allowsSelectionTextItems = context.environment.allowsSelectionTextItems
         textView.isSelectable = !context.environment.allowsSelectionTextItems.isEmpty
-        textView.onCopy = context.environment.onCppy.map { action in
+        textView.onCopy = context.environment.onCopy.map { action in
             { action(AttributedString($0)) }
         }
         

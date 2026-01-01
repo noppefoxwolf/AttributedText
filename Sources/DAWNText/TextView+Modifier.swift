@@ -83,13 +83,13 @@ public typealias OnCopy = (AttributedString) -> Void
 
 extension EnvironmentValues {
     @Entry
-    public var onCppy: OnCopy? = nil
+    public var onCopy: OnCopy? = nil
 }
 
 extension View {
     @ViewBuilder
     public func onCopy(_ action: @escaping OnCopy) -> some View {
-        environment(\.onCppy, action)
+        environment(\.onCopy, action)
     }
 }
 
