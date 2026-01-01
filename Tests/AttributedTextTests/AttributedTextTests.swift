@@ -1,5 +1,5 @@
 import Testing
-@testable import DAWNText
+@testable import AttributedText
 import Foundation
 
 @Suite

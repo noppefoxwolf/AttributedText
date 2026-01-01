@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 import os
 
-public struct TextView: UIViewRepresentable {
+public struct AttributedText: UIViewRepresentable {
     public init(
         _ attributedString: AttributedString
     ) {
@@ -48,18 +48,10 @@ public struct TextView: UIViewRepresentable {
 
     public func updateUIView(_ textView: UIViewType, context: Context) {
         textView.extraActions = context.environment.extraActions
-        
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .init(context.environment.multilineTextAlignment)
-        paragraphStyle.lineSpacing = context.environment.lineSpacing
-        let attributeContainer = AttributeContainer([
-            .font : context.environment.uiFont,
-            .paragraphStyle : paragraphStyle,
-        ])
-        
+
         // FIXME: NSAttributedStringの生成が重い
         textView.attributedText = try! NSAttributedString(
-            attributedString.mergingAttributes(attributeContainer),
+            attributedString,
             including: \.uiKit
         )
         textView.textLayoutManager?.textContainer?.maximumNumberOfLines =
@@ -100,12 +92,10 @@ public struct TextView: UIViewRepresentable {
         let width = nearestEvenMultiple(of: proposalWidth)
         // workaround: Layout側でキャッシュしてもsizeThatFitsが呼ばれるのでCoordinatorで設定する
         let attributedStringHashValue = attributedString.hashValue
-        let fontHashValue = context.environment.uiFont.hashValue
         let numberOfLines = context.environment.lineLimit ?? 0
         let cacheKey = TextViewSizeCacheKey(
             width: width,
             attributedStringHashValue: attributedStringHashValue,
-            fontHashValue: fontHashValue,
             numberOfLines: numberOfLines
         )
         let retriever = TextViewSizeCacheRetriever(cache: context.environment.textViewSizeCache)

@@ -34,6 +34,6 @@ struct TextViewSizeCacheRetriever: Sendable {
 
 extension TextViewSizeCacheKey {
     func isEqualTypography(to other: TextViewSizeCacheKey) -> Bool {
-        other.attributedStringHashValue == attributedStringHashValue && other.fontHashValue == fontHashValue && other.numberOfLines == numberOfLines
+        other.attributedStringHashValue == attributedStringHashValue && other.numberOfLines == numberOfLines
     }
 }

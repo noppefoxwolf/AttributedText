@@ -15,18 +15,6 @@ extension View {
 
 extension EnvironmentValues {
     @Entry
-    public var uiFont: UIFont =  .preferredFont(forTextStyle: .body)
-}
-
-extension View {
-    @ViewBuilder
-    public func uiFont(_ font: UIFont) -> some View {
-        environment(\.uiFont, font)
-    }
-}
-
-extension EnvironmentValues {
-    @Entry
     public var lineFragmentPadding: Double? = nil
 }
 
@@ -34,18 +22,6 @@ extension View {
     @ViewBuilder
     func lineFragmentPadding(_ lineFragmentPadding: Double?) -> some View {
         environment(\.lineFragmentPadding, lineFragmentPadding)
-    }
-}
-
-extension EnvironmentValues {
-    @Entry
-    public var uiforegroundColor: UIColor = .label
-}
-
-extension View {
-    @ViewBuilder
-    public func uiforegroundColor(_ uiforegroundColor: UIColor) -> some View {
-        environment(\.uiforegroundColor, uiforegroundColor)
     }
 }
 
