@@ -43,6 +43,9 @@ struct App: SwiftUI.App {
         let attachment = NSTextAttachment(image: .actions)
         let nsAttributedString = NSMutableAttributedString(attachment: attachment)
         nsAttributedString.append(NSAttributedString("is image."))
-        return AttributedString(nsAttributedString)
+        var attributedString = AttributedString(nsAttributedString)
+        attributedString.font = UIFont.preferredFont(forTextStyle: .body)
+        attributedString.foregroundColor = UIColor.label
+        return attributedString
     }
 }
