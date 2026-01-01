@@ -35,7 +35,7 @@ public struct AttributedText: UIViewRepresentable {
         textView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         textView.setContentHuggingPriority(.defaultHigh, for: .vertical)
         
-        // Apparance
+        // Appearance
         textView.backgroundColor = .clear
         textView.showsVerticalScrollIndicator = false
         textView.showsHorizontalScrollIndicator = false
