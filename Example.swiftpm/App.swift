@@ -1,5 +1,5 @@
 import SwiftUI
-import DAWNText
+import AttributedText
 
 @main
 struct App: SwiftUI.App {
@@ -7,33 +7,36 @@ struct App: SwiftUI.App {
         WindowGroup {
             NavigationView {
                 List {
-                    TextView("Hello, World!!")
-                    TextView("in List")
+                    AttributedText("Hello, World!!")
+                    AttributedText("in List")
                     VStack {
-                        TextView("Hello, World!!")
-                        TextView("in VStack")
+                        AttributedText("Hello, World!!")
+                        AttributedText("in VStack")
                     }
                     HStack {
-                        TextView("Hello, World!!")
-                        TextView("in HStack")
+                        AttributedText("Hello, World!!")
+                        AttributedText("in HStack")
                     }
                     
-                    TextView(attributedString)
+                    AttributedText(attributedString)
                     
-                    TextView(nsAttributedString)
+                    AttributedText(nsAttributedString)
                 }.navigationTitle("DAWNText")
             }
         }
     }
     
     var attributedString: AttributedString {
-        try! AttributedString(
+        var attributedString = try! AttributedString(
             markdown: """
             **Markdown** is *easy* syntax.
             [Link to Apple](https://apple.com)
             """,
             options: .init(interpretedSyntax: .inlineOnlyPreservingWhitespace)
         )
+        attributedString.font = UIFont.preferredFont(forTextStyle: .body)
+        attributedString.foregroundColor = UIColor.label
+        return attributedString
     }
     
     var nsAttributedString: AttributedString {
