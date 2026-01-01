@@ -24,6 +24,7 @@ public struct AttributedText: UIViewRepresentable {
         textView.delegate = context.coordinator
         textView.allowsEditingTextAttributes = true
         textView.isEditable = false
+        textView.dataDetectorTypes = []
         
         // Layout
         textView.textContainerInset = .zero
