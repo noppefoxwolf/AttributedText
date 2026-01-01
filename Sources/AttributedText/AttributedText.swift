@@ -1,144 +1,110 @@
-import SwiftUI
-import UIKit
+public import UIKit
+public import SwiftUI
 import os
 
 public struct AttributedText: UIViewRepresentable {
-    public init(
-        _ attributedString: AttributedString
-    ) {
-        self.attributedString = attributedString
-    }
+    let attributedText: AttributedString
 
-    let attributedString: AttributedString
-    
     let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier!,
         category: #file
     )
 
-    public typealias UIViewType = UIKitTextView
+    public init(_ attributedText: AttributedString) {
+        self.attributedText = attributedText
+    }
 
-    public func makeUIView(context: Context) -> UIViewType {
-        // Setup
-        let textView = UIViewType()
-        textView.delegate = context.coordinator
-        textView.allowsEditingTextAttributes = true
-        textView.isEditable = false
-        textView.dataDetectorTypes = []
-        
-        // Layout
-        textView.textContainerInset = .zero
-        textView.contentInset = .zero
-        textView.isScrollEnabled = false
-        textView.textContainer.lineFragmentPadding = 0
-        textView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        textView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-        textView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        textView.setContentHuggingPriority(.defaultHigh, for: .vertical)
-        
-        // Appearance
-        textView.backgroundColor = .clear
-        textView.showsVerticalScrollIndicator = false
-        textView.showsHorizontalScrollIndicator = false
+    public func makeUIView(context: Context) -> AttributedTextView {
+        let uiView = AttributedTextView()
+        uiView.isEditable = false
+        uiView.isSelectable = false
+        uiView.isScrollEnabled = false
+        uiView.contentInset = .zero
+        uiView.backgroundColor = .clear
+        uiView.dataDetectorTypes = []
 
-        // https://twitter.com/noppefoxwolf/status/1672849798632976384?s=61&t=cwsZFMcBypoSq1n2DhTXeQ
+        // Remove Insets
+        uiView.textContainer.lineFragmentPadding = 0
+        uiView.textContainerInset = .zero
+
+        uiView.allowsEditingTextAttributes = true
+        uiView.showsVerticalScrollIndicator = false
+        uiView.showsHorizontalScrollIndicator = false
+
         context.coordinator.openURLAction = context.environment.openURL
         context.coordinator.textItemTagAction = context.environment.onTapTextItemTagAction
-        return textView
-    }
 
-    public func updateUIView(_ textView: UIViewType, context: Context) {
-        textView.extraActions = context.environment.extraActions
-
-        // FIXME: NSAttributedStringの生成が重い
-        textView.attributedText = try! NSAttributedString(
-            attributedString,
-            including: \.uiKit
-        )
-        textView.textLayoutManager?.textContainer?.maximumNumberOfLines =
-            context.environment.lineLimit ?? 0
-        textView.textLayoutManager?.textContainer?.lineBreakMode =
-            context.environment.lineBreakMode ?? .byWordWrapping
-        textView.textLayoutManager?.textContainer?.lineFragmentPadding =
-            context.environment.lineFragmentPadding ?? 0
-        textView.allowsSelectionTextItems = context.environment.allowsSelectionTextItems
-        textView.isSelectable = !context.environment.allowsSelectionTextItems.isEmpty
-        textView.onCopy = context.environment.onCopy.map { action in
-            { action(AttributedString($0)) }
-        }
-        
-        if context.environment.allowsSelectionTextItems != TextItemType.allCases {
-            // Lightweight hack
-            for subview in textView.subviews {
-                if "\(type(of: subview))" != "_UITextContainerView" {
-                    subview.removeFromSuperview()
-                }
-            }
-            for gestureRecognizer in textView.gestureRecognizers ?? [] {
-                if gestureRecognizer.name != "UITextInteractionNameLinkTap" {
-                    textView.removeGestureRecognizer(gestureRecognizer)
-                }
+        for subview in uiView.subviews {
+            if "\(type(of: subview))" != "_UITextContainerView" {
+                subview.removeFromSuperview()
             }
         }
+        for gestureRecognizer in uiView.gestureRecognizers ?? [] {
+            if gestureRecognizer.name != "UITextInteractionNameLinkTap" {
+                uiView.removeGestureRecognizer(gestureRecognizer)
+            }
+        }
+
+        return uiView
     }
 
-    public func sizeThatFits(_ proposal: ProposedViewSize, uiView: UIViewType, context: Context)
-        -> CGSize?
-    {
-        // guard zero, infinity and Nan
-        guard let proposalWidth = proposal.width, proposalWidth.isNormal else { return .zero }
-        func nearestEvenMultiple(of number: Double) -> Double {
-            round(number / 2) * 2
-        }
-        let width = nearestEvenMultiple(of: proposalWidth)
-        // workaround: Layout側でキャッシュしてもsizeThatFitsが呼ばれるのでCoordinatorで設定する
-        let attributedStringHashValue = attributedString.hashValue
-        let numberOfLines = context.environment.lineLimit ?? 0
-        let cacheKey = TextViewSizeCacheKey(
-            width: width,
-            attributedStringHashValue: attributedStringHashValue,
-            numberOfLines: numberOfLines
+    public func updateUIView(_ uiView: AttributedTextView, context: Context) {
+        // SwiftUI.Text compatibility
+        modify(
+            &uiView.textContainer.maximumNumberOfLines,
+            newValue: context.environment.lineLimit ?? 0
         )
-        let retriever = TextViewSizeCacheRetriever(cache: context.environment.textViewSizeCache)
-        if let size = retriever.sizeThatFits(cacheKey) {
-            return CGSize(width: size.width, height: size.height)
-        } else {
-            let proposalSize = CGSize(width: width, height: 0)
-            let size = uiView.sizeThatFits(proposalSize)
-            let value = TextViewSizeCacheValue(width: size.width, height: size.height)
-            context.environment.textViewSizeCache[cacheKey] = value
-            return size
+        modify(
+            &uiView.textContainer.lineBreakMode,
+            newValue: context.environment.truncationMode.lineBreakMode
+        )
+
+        modify(
+            &uiView.attributedText,
+            newValue: NSAttributedString(attributedText)
+        )
+    }
+
+    func modify<T: Equatable>(_ value: inout T, newValue: T) {
+        if value != newValue {
+            value = newValue
         }
+    }
+
+    public func sizeThatFits(
+        _ proposal: ProposedViewSize,
+        uiView: AttributedTextView,
+        context: Context
+    ) -> CGSize? {
+        var targetSize = CGSize(
+            width: (proposal.width ?? UIView.noIntrinsicMetric).rounded(.towardZero),
+            height: UIView.noIntrinsicMetric
+        )
+
+        if !targetSize.width.isNormal {
+            targetSize.width = 0
+        }
+
+        let key = Cache.Key(attributedString: attributedText, targetSize: targetSize)
+        if let cache = Cache.shared.get(key) {
+            logger.info("Cache hit!: \(key.attributedString.hashValue) \(key.targetSize.width) \(key.targetSize.height)")
+            return cache
+        }
+        let sizeThatFits = uiView.systemLayoutSizeFitting(
+            targetSize,
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .required
+        )
+        Cache.shared.set(key, size: sizeThatFits)
+
+        logger
+            .info(
+                "Cache miss: \(key.attributedString.hashValue) \(key.targetSize.width) \(key.targetSize.height) > \(sizeThatFits.width)x\(sizeThatFits.height)"
+            )
+        return sizeThatFits
     }
 
     public func makeCoordinator() -> Coordinator {
         Coordinator()
-    }
-
-    public final class Coordinator: NSObject, UITextViewDelegate {
-
-        var openURLAction: OpenURLAction? = nil
-        var textItemTagAction: OnTapTextItemTagAction? = nil
-
-        public func textView(
-            _ textView: UITextView,
-            primaryActionFor textItem: UITextItem,
-            defaultAction: UIAction
-        ) -> UIAction? {
-            switch textItem.content {
-            case .link(let url):
-                return openURLAction.map({ action in
-                    UIAction(handler: { _ in action(url) })
-                })
-            case .textAttachment:
-                return nil
-            case .tag(let textItemTag):
-                return textItemTagAction.map { action in
-                    UIAction(handler: { _ in action(textItemTag) })
-                }
-            @unknown default:
-                return nil
-            }
-        }
     }
 }

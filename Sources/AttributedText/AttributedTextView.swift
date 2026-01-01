@@ -1,7 +1,6 @@
 import UIKit
-import os
 
-public final class UIKitTextView: UITextView {
+public final class AttributedTextView: UITextView {
     var extraActions: [UIAction] = []
     var allowsSelectionTextItems: [TextItemType] = TextItemType.allCases
     var onCopy: ((NSAttributedString) -> Void)? = nil
@@ -52,7 +51,7 @@ public final class UIKitTextView: UITextView {
             }.contains(true)
         }
     }
-    
+
     public override func copy(_ sender: Any?) {
         if let onCopy {
             let selectedText = attributedText.attributedSubstring(from: selectedRange)
@@ -60,5 +59,16 @@ public final class UIKitTextView: UITextView {
         } else {
             super.copy(sender)
         }
+    }
+
+    public override func systemLayoutSizeFitting(
+        _ targetSize: CGSize,
+        withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority,
+        verticalFittingPriority: UILayoutPriority
+    ) -> CGSize {
+        if targetSize.width == 0 {
+            return .zero
+        }
+        return sizeThatFits(targetSize)
     }
 }
