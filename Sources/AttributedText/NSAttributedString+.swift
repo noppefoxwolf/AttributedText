@@ -49,6 +49,23 @@ extension NSAttributedString {
         return result
     }
 
+    /// SwiftUI.Text uses the standard line-break strategy by default. UIKit's
+    /// paragraph styles default to `.none`, so apply the SwiftUI-compatible
+    /// strategy to every paragraph before handing the content to UITextView.
+    func applyingDefaultLineBreakStrategy() -> NSAttributedString {
+        guard length > 0 else { return self }
+
+        let result = NSMutableAttributedString(attributedString: self)
+        let range = NSRange(location: 0, length: result.length)
+        result.enumerateAttribute(.paragraphStyle, in: range) { value, range, _ in
+            let paragraphStyle = (value as? NSParagraphStyle)?.mutableCopy()
+                as? NSMutableParagraphStyle ?? NSMutableParagraphStyle()
+            paragraphStyle.lineBreakStrategy = .standard
+            result.addAttribute(.paragraphStyle, value: paragraphStyle, range: range)
+        }
+        return result
+    }
+
     func applyingDefaultFont(_ font: UIFont?) -> NSAttributedString {
         guard let font, length > 0 else { return self }
 

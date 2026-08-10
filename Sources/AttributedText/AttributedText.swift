@@ -87,6 +87,7 @@ public struct AttributedText: UIViewRepresentable {
         content = content.applyingDefaultFont(uiView.font)
         content = content.applyingTextAlignment(environment.multilineTextAlignment.textAlignment)
         content = content.applyingLineSpacing(environment.lineSpacing)
+        content = content.applyingDefaultLineBreakStrategy()
         modify(
             &uiView.attributedTextContent,
             newValue: AttributedTextContent(content)

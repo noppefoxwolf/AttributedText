@@ -39,4 +39,15 @@ struct AttributedTextContentTests {
 
         #expect(AttributedTextContent(NSAttributedString(red)) != AttributedTextContent(NSAttributedString(blue)))
     }
+
+    @Test
+    func defaultLineBreakStrategyMatchesSwiftUIText() {
+        let content = NSAttributedString("Text")
+
+        let result = content.applyingDefaultLineBreakStrategy()
+        let paragraphStyle = result.attribute(.paragraphStyle, at: 0, effectiveRange: nil)
+            as? NSParagraphStyle
+
+        #expect(paragraphStyle?.lineBreakStrategy == .standard)
+    }
 }
