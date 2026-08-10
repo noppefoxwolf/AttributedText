@@ -3,8 +3,8 @@
 `AttributedText` is a SwiftUI component that renders an `AttributedString` with an appearance close to SwiftUI's `Text`. It is built on top of `UITextView`, so it also supports rich text features such as links, text selection, and `NSTextAttachment`.
 
 <p>
-  <img src="https://github.com/noppefoxwolf/DAWNText/blob/main/.github/Screenshot1.png" width="300" alt="AttributedText example">
-  <img src="https://github.com/noppefoxwolf/DAWNText/blob/main/.github/Screenshot2.jpeg" width="300" alt="AttributedText example">
+  <img src="https://github.com/noppefoxwolf/AttributedText/blob/main/.github/Screenshot1.png" width="300" alt="AttributedText example">
+  <img src="https://github.com/noppefoxwolf/AttributedText/blob/main/.github/Screenshot2.jpeg" width="300" alt="AttributedText example">
 </p>
 
 ## Requirements
@@ -18,7 +18,7 @@
 Add the following URL to your project using Swift Package Manager:
 
 ```text
-https://github.com/noppefoxwolf/DAWNText.git
+https://github.com/noppefoxwolf/AttributedText.git
 ```
 
 ## Usage
