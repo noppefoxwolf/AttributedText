@@ -1,76 +1,29 @@
-import Foundation
+import SwiftUI
 import Testing
+import UIKit
 
 @testable import AttributedText
 
 @Suite
-struct TextViewSizeCacheRetrieverTests {
+@MainActor
+struct CacheTests {
     @Test
-    func noCache() async throws {
-        let cache = TextViewSizeCache(base: OnMemoryCache())
-        let retriever = TextViewSizeCacheRetriever(cache: cache)
-        let key = TextViewSizeCacheKey(
-            width: 0,
-            attributedStringHashValue: 0,
-            fontHashValue: 0,
-            numberOfLines: 0
+    func cacheReturnsStoredSize() {
+        let cache = Cache()
+        let key = Cache.Key(
+            attributedString: AttributedString("Text"),
+            targetSize: CGSize(width: 200, height: UIView.noIntrinsicMetric),
+            font: .body,
+            maximumNumberOfLines: 0,
+            lineBreakMode: .byWordWrapping,
+            textAlignment: .left,
+            lineSpacing: 0,
+            textCase: nil
         )
-        #expect(retriever.sizeThatFits(key) == nil)
-    }
+        let size = CGSize(width: 123, height: 45)
 
-    @Test
-    func hitCache() async throws {
-        let cache = TextViewSizeCache(base: OnMemoryCache())
-        let retriever = TextViewSizeCacheRetriever(cache: cache)
-        let key = TextViewSizeCacheKey(
-            width: 0,
-            attributedStringHashValue: 0,
-            fontHashValue: 0,
-            numberOfLines: 0
-        )
-        cache[key] = CGSize(width: 123, height: 123)
-        #expect(retriever.sizeThatFits(key) == CGSize(width: 123, height: 123))
-    }
-
-    @Test
-    func hitIntrinsicCache() async throws {
-        let cache = TextViewSizeCache(base: OnMemoryCache())
-        let retriever = TextViewSizeCacheRetriever(cache: cache)
-        let intrinsicKey = TextViewSizeCacheKey(
-            width: 0,
-            attributedStringHashValue: 0,
-            fontHashValue: 0,
-            numberOfLines: 0
-        )
-        cache[intrinsicKey] = CGSize(width: 123, height: 123)
-
-        let key = TextViewSizeCacheKey(
-            width: 200,
-            attributedStringHashValue: 0,
-            fontHashValue: 0,
-            numberOfLines: 0
-        )
-        #expect(retriever.sizeThatFits(key) == CGSize(width: 123, height: 123))
-    }
-
-    @Test
-    func hitSinglelineIntrinsicCache() async throws {
-        let cache = TextViewSizeCache(base: OnMemoryCache())
-        let retriever = TextViewSizeCacheRetriever(cache: cache)
-        let intrinsicKey = TextViewSizeCacheKey(
-            width: 200,
-            attributedStringHashValue: 0,
-            fontHashValue: 0,
-            numberOfLines: 1
-        )
-        cache[intrinsicKey] = CGSize(width: 123, height: 123)
-
-        let key = TextViewSizeCacheKey(
-            width: 300,
-            attributedStringHashValue: 0,
-            fontHashValue: 0,
-            numberOfLines: 1
-        )
-        #expect(retriever.sizeThatFits(key) == CGSize(width: 123, height: 123))
+        #expect(cache.get(key) == nil)
+        cache.set(key, size: size)
+        #expect(cache.get(key) == size)
     }
 }

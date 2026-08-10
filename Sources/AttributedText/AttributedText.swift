@@ -32,6 +32,8 @@ public struct AttributedText: UIViewRepresentable {
         uiView.allowsEditingTextAttributes = true
         uiView.showsVerticalScrollIndicator = false
         uiView.showsHorizontalScrollIndicator = false
+        uiView.adjustsFontForContentSizeCategory = true
+        uiView.textColor = .label
 
         context.coordinator.openURLAction = context.environment.openURL
         context.coordinator.textItemTagAction = context.environment.onTapTextItemTagAction
@@ -40,22 +42,55 @@ public struct AttributedText: UIViewRepresentable {
     }
 
     public func updateUIView(_ uiView: AttributedTextView, context: Context) {
+        let environment = context.environment
+        let lineBreakMode = environment.lineLimit == nil
+            ? NSLineBreakMode.byWordWrapping
+            : environment.truncationMode.lineBreakMode
+
         // SwiftUI.Text compatibility
         modify(
+            &uiView.font,
+            newValue: resolvedFont(for: environment.font, in: environment)
+        )
+        modify(
             &uiView.textContainer.maximumNumberOfLines,
-            newValue: context.environment.lineLimit ?? 0
+            newValue: environment.lineLimit ?? 0
         )
         modify(
             &uiView.textContainer.lineBreakMode,
-            newValue: context.environment.truncationMode.lineBreakMode
+            newValue: lineBreakMode
         )
         modify(
             &uiView.textAlignment,
-            newValue: context.environment.multilineTextAlignment.textAlignment
+            newValue: environment.multilineTextAlignment.textAlignment
         )
         modify(
+            &uiView.textContainer.lineFragmentPadding,
+            newValue: 0
+        )
+        modify(
+            &uiView.textContainerInset,
+            newValue: .zero
+        )
+
+        var content = NSAttributedString(attributedText)
+        switch environment.textCase {
+        case .uppercase:
+            content = content.applyingTextCase(.uppercase)
+        case .lowercase:
+            content = content.applyingTextCase(.lowercase)
+        case nil:
+            break
+        @unknown default:
+            break
+        }
+        content = content.applyingDefaultFont(uiView.font)
+        content = content.applyingTextAlignment(environment.multilineTextAlignment.textAlignment)
+        content = content.applyingLineSpacing(environment.lineSpacing)
+        content = content.applyingDefaultLineBreakStrategy()
+        modify(
             &uiView.attributedTextContent,
-            newValue: AttributedTextContent(NSAttributedString(attributedText))
+            newValue: AttributedTextContent(content)
         )
 
         modify(
@@ -123,14 +158,23 @@ public struct AttributedText: UIViewRepresentable {
             height: UIView.noIntrinsicMetric
         )
 
-        let key = Cache.Key(attributedString: attributedText, targetSize: targetSize)
+        let key = Cache.Key(
+            attributedString: attributedText,
+            targetSize: targetSize,
+            font: context.environment.font,
+            maximumNumberOfLines: context.environment.lineLimit ?? 0,
+            lineBreakMode: context.environment.lineLimit == nil
+                ? .byWordWrapping
+                : context.environment.truncationMode.lineBreakMode,
+            textAlignment: context.environment.multilineTextAlignment.textAlignment,
+            lineSpacing: context.environment.lineSpacing,
+            textCase: context.environment.textCase
+        )
         if let cache = Cache.shared.get(key) {
             return cache
         }
-        let sizeThatFits = uiView.systemLayoutSizeFitting(
-            targetSize,
-            withHorizontalFittingPriority: .required,
-            verticalFittingPriority: .required
+        let sizeThatFits = uiView.sizeThatFits(
+            CGSize(width: roundedWidth, height: .greatestFiniteMagnitude)
         )
         Cache.shared.set(key, size: sizeThatFits)
         return sizeThatFits
@@ -139,4 +183,5 @@ public struct AttributedText: UIViewRepresentable {
     public func makeCoordinator() -> Coordinator {
         Coordinator()
     }
+
 }
