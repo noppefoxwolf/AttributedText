@@ -1,9 +1,9 @@
-import UIKit
+public import UIKit
 
 public final class AttributedTextView: UITextView {
     var extraActions: [UIAction] = []
     var allowsSelectionTextItems: [TextItemType] = TextItemType.allCases
-    var onCopy: ((NSAttributedString) -> Void)? = nil
+    var onCopy: (@Sendable (NSAttributedString) -> Void)? = nil
 
     public override func editMenu(for textRange: UITextRange, suggestedActions: [UIMenuElement])
         -> UIMenu?

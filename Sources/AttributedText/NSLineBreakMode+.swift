@@ -15,3 +15,16 @@ extension Text.TruncationMode {
         }
     }
 }
+
+extension TextAlignment {
+    var textAlignment: NSTextAlignment {
+        switch self {
+        case .leading:
+            .left
+        case .center:
+            .center
+        case .trailing:
+            .right
+        }
+    }
+}

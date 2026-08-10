@@ -1,31 +1,59 @@
-import SwiftUI
+public import SwiftUI
 import UIKit
 
-public typealias OnTapTextItemTagAction = @Sendable (String) -> Void
+public struct OnTapTextItemTagAction: Sendable {
+    private let action: (@Sendable (String) -> Void)?
 
-extension EnvironmentValues {
-    @Entry
-    public var onTapTextItemTagAction: OnTapTextItemTagAction? = nil
-}
+    public init(action: (@Sendable (String) -> Void)? = nil) {
+        self.action = action
+    }
 
-extension View {
-    @ViewBuilder
-    public func onTapTextItemTag(_ action: @escaping OnTapTextItemTagAction) -> some View {
-        environment(\.onTapTextItemTagAction, action)
+    public func callAsFunction(_ textItemTag: String) {
+        action?(textItemTag)
+    }
+
+    var isEmpty: Bool {
+        action == nil
     }
 }
 
-public typealias OnCopy = @Sendable (AttributedString) -> Void
-
 extension EnvironmentValues {
     @Entry
-    public var onCopy: OnCopy? = nil
+    public var onTapTextItemTagAction = OnTapTextItemTagAction()
 }
 
 extension View {
     @ViewBuilder
-    public func onCopy(_ action: @escaping OnCopy) -> some View {
-        environment(\.onCopy, action)
+    public func onTapTextItemTag(_ action: @escaping @Sendable (String) -> Void) -> some View {
+        environment(\.onTapTextItemTagAction, OnTapTextItemTagAction(action: action))
+    }
+}
+
+public struct OnCopy: Sendable {
+    private let action: (@Sendable (AttributedString) -> Void)?
+
+    public init(action: (@Sendable (AttributedString) -> Void)? = nil) {
+        self.action = action
+    }
+
+    public func callAsFunction(_ attributedString: AttributedString) {
+        action?(attributedString)
+    }
+
+    var isEmpty: Bool {
+        action == nil
+    }
+}
+
+extension EnvironmentValues {
+    @Entry
+    public var onCopy = OnCopy()
+}
+
+extension View {
+    @ViewBuilder
+    public func onCopy(_ action: @escaping @Sendable (AttributedString) -> Void) -> some View {
+        environment(\.onCopy, OnCopy(action: action))
     }
 }
 

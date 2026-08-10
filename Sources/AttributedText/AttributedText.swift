@@ -1,5 +1,5 @@
 public import SwiftUI
-public import UIKit
+import UIKit
 import os
 
 public struct AttributedText: UIViewRepresentable {
@@ -16,6 +16,7 @@ public struct AttributedText: UIViewRepresentable {
 
     public func makeUIView(context: Context) -> AttributedTextView {
         let uiView = AttributedTextView()
+        uiView.delegate = context.coordinator
         uiView.isEditable = false
         uiView.isSelectable = false
         uiView.isScrollEnabled = false
@@ -27,23 +28,13 @@ public struct AttributedText: UIViewRepresentable {
         uiView.textContainer.lineFragmentPadding = 0
         uiView.textContainerInset = .zero
 
+        // Disabled
         uiView.allowsEditingTextAttributes = true
         uiView.showsVerticalScrollIndicator = false
         uiView.showsHorizontalScrollIndicator = false
 
         context.coordinator.openURLAction = context.environment.openURL
         context.coordinator.textItemTagAction = context.environment.onTapTextItemTagAction
-
-        for subview in uiView.subviews {
-            if "\(type(of: subview))" != "_UITextContainerView" {
-                subview.removeFromSuperview()
-            }
-        }
-        for gestureRecognizer in uiView.gestureRecognizers ?? [] {
-            if gestureRecognizer.name != "UITextInteractionNameLinkTap" {
-                uiView.removeGestureRecognizer(gestureRecognizer)
-            }
-        }
 
         return uiView
     }
@@ -58,11 +49,51 @@ public struct AttributedText: UIViewRepresentable {
             &uiView.textContainer.lineBreakMode,
             newValue: context.environment.truncationMode.lineBreakMode
         )
+        modify(
+            &uiView.textAlignment,
+            newValue: context.environment.multilineTextAlignment.textAlignment
+        )
+        modify(
+            &uiView.attributedTextContent,
+            newValue: AttributedTextContent(NSAttributedString(attributedText))
+        )
 
         modify(
-            &uiView.attributedText,
-            newValue: NSAttributedString(attributedText)
+            &uiView.extraActions,
+            newValue: context.environment.extraActions
         )
+
+        modify(
+            &uiView.allowsSelectionTextItems,
+            newValue: context.environment.allowsSelectionTextItems
+        )
+
+        modify(
+            &uiView.isSelectable,
+            newValue: !context.environment.allowsSelectionTextItems.isEmpty
+        )
+
+        let copyAction = context.environment.onCopy
+        if copyAction.isEmpty {
+            uiView.onCopy = nil
+        } else {
+            uiView.onCopy = { selectedText in
+                copyAction(AttributedString(selectedText))
+            }
+        }
+
+        if context.environment.allowsSelectionTextItems != TextItemType.allCases {
+            for subview in uiView.subviews {
+                if "\(type(of: subview))" != "_UITextContainerView" {
+                    subview.removeFromSuperview()
+                }
+            }
+            for gestureRecognizer in uiView.gestureRecognizers ?? [] {
+                if gestureRecognizer.name != "UITextInteractionNameLinkTap" {
+                    uiView.removeGestureRecognizer(gestureRecognizer)
+                }
+            }
+        }
     }
 
     func modify<T: Equatable>(_ value: inout T, newValue: T) {
@@ -76,20 +107,24 @@ public struct AttributedText: UIViewRepresentable {
         uiView: AttributedTextView,
         context: Context
     ) -> CGSize? {
-        var targetSize = CGSize(
-            width: (proposal.width ?? UIView.noIntrinsicMetric).rounded(.towardZero),
+        guard let proposedWidth = proposal.width,
+            proposedWidth.isNormal
+        else {
+            return .zero
+        }
+
+        let roundedWidth = proposedWidth.rounded(.towardZero)
+        guard roundedWidth > 0 else {
+            return .zero
+        }
+
+        let targetSize = CGSize(
+            width: roundedWidth,
             height: UIView.noIntrinsicMetric
         )
 
-        if !targetSize.width.isNormal {
-            targetSize.width = 0
-        }
-
         let key = Cache.Key(attributedString: attributedText, targetSize: targetSize)
         if let cache = Cache.shared.get(key) {
-            logger.info(
-                "Cache hit!: \(key.attributedString.hashValue) \(key.targetSize.width) \(key.targetSize.height)"
-            )
             return cache
         }
         let sizeThatFits = uiView.systemLayoutSizeFitting(
@@ -98,11 +133,6 @@ public struct AttributedText: UIViewRepresentable {
             verticalFittingPriority: .required
         )
         Cache.shared.set(key, size: sizeThatFits)
-
-        logger
-            .info(
-                "Cache miss: \(key.attributedString.hashValue) \(key.targetSize.width) \(key.targetSize.height) > \(sizeThatFits.width)x\(sizeThatFits.height)"
-            )
         return sizeThatFits
     }
 
