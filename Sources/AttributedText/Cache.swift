@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 
 @MainActor
 final class Cache: Sendable {
@@ -8,6 +9,12 @@ final class Cache: Sendable {
     struct Key: Hashable, Sendable {
         let attributedString: AttributedString
         let targetSize: CGSize
+        let font: Font?
+        let maximumNumberOfLines: Int
+        let lineBreakMode: NSLineBreakMode
+        let textAlignment: NSTextAlignment
+        let lineSpacing: CGFloat
+        let textCase: Text.Case?
     }
 
     func set(_ key: Key, size: CGSize) {

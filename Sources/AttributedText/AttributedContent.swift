@@ -10,7 +10,7 @@ final class AttributedTextContent: Equatable {
     }
 
     static func == (lhs: AttributedTextContent, rhs: AttributedTextContent) -> Bool {
-        lhs.content.string == rhs.content.string
+        lhs.content.isEqual(to: rhs.content)
     }
 }
 
