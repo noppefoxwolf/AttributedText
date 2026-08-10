@@ -85,6 +85,7 @@ public struct AttributedText: UIViewRepresentable {
             break
         }
         content = content.applyingDefaultFont(uiView.font)
+        content = content.applyingDefaultForegroundColor(uiView.textColor)
         content = content.applyingTextAlignment(environment.multilineTextAlignment.textAlignment)
         content = content.applyingLineSpacing(environment.lineSpacing)
         content = content.applyingDefaultLineBreakStrategy()
