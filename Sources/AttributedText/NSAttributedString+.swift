@@ -82,4 +82,21 @@ extension NSAttributedString {
         }
         return result
     }
+
+    func applyingDefaultForegroundColor(_ color: UIColor?) -> NSAttributedString {
+        guard let color, length > 0 else { return self }
+
+        let result = NSMutableAttributedString(attributedString: self)
+        let range = NSRange(location: 0, length: result.length)
+        var missingColorRanges: [NSRange] = []
+        result.enumerateAttribute(.foregroundColor, in: range) { value, range, _ in
+            if value == nil {
+                missingColorRanges.append(range)
+            }
+        }
+        for range in missingColorRanges {
+            result.addAttribute(.foregroundColor, value: color, range: range)
+        }
+        return result
+    }
 }

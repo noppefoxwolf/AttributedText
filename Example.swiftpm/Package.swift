@@ -32,7 +32,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(path: "..")
+        .package(name: "AttributedText", path: "..")
     ],
     targets: [
         .executableTarget(

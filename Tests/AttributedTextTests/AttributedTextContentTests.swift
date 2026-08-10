@@ -50,4 +50,15 @@ struct AttributedTextContentTests {
 
         #expect(paragraphStyle?.lineBreakStrategy == .standard)
     }
+
+    @Test
+    func defaultForegroundColorIsAppliedOnlyToUncoloredText() {
+        let content = NSMutableAttributedString(string: "Default Red")
+        content.addAttribute(.foregroundColor, value: UIColor.systemRed, range: NSRange(location: 8, length: 3))
+
+        let result = content.applyingDefaultForegroundColor(.label)
+
+        #expect(result.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor == .label)
+        #expect(result.attribute(.foregroundColor, at: 8, effectiveRange: nil) as? UIColor == .systemRed)
+    }
 }
