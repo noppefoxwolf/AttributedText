@@ -64,9 +64,14 @@ public struct AttributedText: UIViewRepresentable {
             &uiView.textAlignment,
             newValue: environment.multilineTextAlignment.textAlignment
         )
-        uiView.textContainer.lineBreakMode = lineBreakMode
-        uiView.textContainer.lineFragmentPadding = 0
-        uiView.textContainerInset = .zero
+        modify(
+            &uiView.textContainer.lineFragmentPadding,
+            newValue: 0
+        )
+        modify(
+            &uiView.textContainerInset,
+            newValue: .zero
+        )
 
         var content = NSAttributedString(attributedText)
         switch environment.textCase {
@@ -86,7 +91,6 @@ public struct AttributedText: UIViewRepresentable {
             &uiView.attributedTextContent,
             newValue: AttributedTextContent(content)
         )
-        uiView.textAlignment = environment.multilineTextAlignment.textAlignment
 
         modify(
             &uiView.extraActions,
