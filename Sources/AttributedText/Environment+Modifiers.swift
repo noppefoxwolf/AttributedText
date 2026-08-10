@@ -54,7 +54,9 @@ extension EnvironmentValues {
 
 extension View {
     @ViewBuilder
-    public func allowsSelectionTextItems(_ types: [TextItemType] = TextItemType.allCases) -> some View {
+    public func allowsSelectionTextItems(_ types: [TextItemType] = TextItemType.allCases)
+        -> some View
+    {
         environment(\.allowsSelectionTextItems, types)
     }
 }

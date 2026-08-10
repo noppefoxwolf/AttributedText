@@ -1,6 +1,7 @@
-import Testing
-@testable import AttributedText
 import Foundation
+import Testing
+
+@testable import AttributedText
 
 @Suite
 struct TextViewSizeCacheRetrieverTests {
@@ -16,7 +17,7 @@ struct TextViewSizeCacheRetrieverTests {
         )
         #expect(retriever.sizeThatFits(key) == nil)
     }
-    
+
     @Test
     func hitCache() async throws {
         let cache = TextViewSizeCache(base: OnMemoryCache())
@@ -30,7 +31,7 @@ struct TextViewSizeCacheRetrieverTests {
         cache[key] = CGSize(width: 123, height: 123)
         #expect(retriever.sizeThatFits(key) == CGSize(width: 123, height: 123))
     }
-    
+
     @Test
     func hitIntrinsicCache() async throws {
         let cache = TextViewSizeCache(base: OnMemoryCache())
@@ -42,7 +43,7 @@ struct TextViewSizeCacheRetrieverTests {
             numberOfLines: 0
         )
         cache[intrinsicKey] = CGSize(width: 123, height: 123)
-        
+
         let key = TextViewSizeCacheKey(
             width: 200,
             attributedStringHashValue: 0,
@@ -51,7 +52,7 @@ struct TextViewSizeCacheRetrieverTests {
         )
         #expect(retriever.sizeThatFits(key) == CGSize(width: 123, height: 123))
     }
-    
+
     @Test
     func hitSinglelineIntrinsicCache() async throws {
         let cache = TextViewSizeCache(base: OnMemoryCache())
@@ -63,7 +64,7 @@ struct TextViewSizeCacheRetrieverTests {
             numberOfLines: 1
         )
         cache[intrinsicKey] = CGSize(width: 123, height: 123)
-        
+
         let key = TextViewSizeCacheKey(
             width: 300,
             attributedStringHashValue: 0,
@@ -73,4 +74,3 @@ struct TextViewSizeCacheRetrieverTests {
         #expect(retriever.sizeThatFits(key) == CGSize(width: 123, height: 123))
     }
 }
-

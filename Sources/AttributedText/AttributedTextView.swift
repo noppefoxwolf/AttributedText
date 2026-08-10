@@ -39,16 +39,20 @@ public final class AttributedTextView: UITextView {
                 return false
             }
             let startIndex = offset(from: beginningOfDocument, to: range.start)
-            return allowsSelectionTextItems.map { textItemType in
-                switch textItemType {
-                case .link:
-                    attributedText.attribute(.link, at: startIndex, effectiveRange: nil) != nil
-                case .tag:
-                    attributedText.attribute(.textItemTag, at: startIndex, effectiveRange: nil) != nil
-                case .textAttachment:
-                    attributedText.attribute(.attachment, at: startIndex, effectiveRange: nil) != nil
+            return
+                allowsSelectionTextItems.map { textItemType in
+                    switch textItemType {
+                    case .link:
+                        attributedText.attribute(.link, at: startIndex, effectiveRange: nil) != nil
+                    case .tag:
+                        attributedText.attribute(.textItemTag, at: startIndex, effectiveRange: nil)
+                            != nil
+                    case .textAttachment:
+                        attributedText.attribute(.attachment, at: startIndex, effectiveRange: nil)
+                            != nil
+                    }
                 }
-            }.contains(true)
+                .contains(true)
         }
     }
 

@@ -1,17 +1,17 @@
-import UIKit
 import SwiftUI
+import UIKit
 
 extension Text.TruncationMode {
     var lineBreakMode: NSLineBreakMode {
         switch self {
         case .head:
-                .byTruncatingHead
+            .byTruncatingHead
         case .middle:
-                .byTruncatingMiddle
+            .byTruncatingMiddle
         case .tail:
-                .byTruncatingTail
+            .byTruncatingTail
         @unknown default:
-                .byTruncatingTail
+            .byTruncatingTail
         }
     }
 }

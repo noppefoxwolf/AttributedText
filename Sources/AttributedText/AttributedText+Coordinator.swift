@@ -1,5 +1,5 @@
-import UIKit
 import SwiftUI
+import UIKit
 
 extension AttributedText {
     public final class Coordinator: NSObject, UITextViewDelegate {

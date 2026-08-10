@@ -1,5 +1,5 @@
-public import UIKit
 public import SwiftUI
+public import UIKit
 import os
 
 public struct AttributedText: UIViewRepresentable {
@@ -87,7 +87,9 @@ public struct AttributedText: UIViewRepresentable {
 
         let key = Cache.Key(attributedString: attributedText, targetSize: targetSize)
         if let cache = Cache.shared.get(key) {
-            logger.info("Cache hit!: \(key.attributedString.hashValue) \(key.targetSize.width) \(key.targetSize.height)")
+            logger.info(
+                "Cache hit!: \(key.attributedString.hashValue) \(key.targetSize.width) \(key.targetSize.height)"
+            )
             return cache
         }
         let sizeThatFits = uiView.systemLayoutSizeFitting(
