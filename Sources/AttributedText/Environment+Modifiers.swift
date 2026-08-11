@@ -2,12 +2,13 @@ public import SwiftUI
 import UIKit
 
 public struct OnTapTextItemTagAction: Sendable {
-    private let action: (@Sendable (String) -> Void)?
+    private let action: (@MainActor @Sendable (String) -> Void)?
 
-    public init(action: (@Sendable (String) -> Void)? = nil) {
+    public init(action: (@MainActor @Sendable (String) -> Void)? = nil) {
         self.action = action
     }
 
+    @MainActor
     public func callAsFunction(_ textItemTag: String) {
         action?(textItemTag)
     }
@@ -24,7 +25,9 @@ extension EnvironmentValues {
 
 extension View {
     @ViewBuilder
-    public func onTapTextItemTag(_ action: @escaping @Sendable (String) -> Void) -> some View {
+    public func onTapTextItemTag(
+        _ action: @escaping @MainActor @Sendable (String) -> Void
+    ) -> some View {
         environment(\.onTapTextItemTagAction, OnTapTextItemTagAction(action: action))
     }
 }
