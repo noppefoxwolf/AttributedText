@@ -122,6 +122,45 @@ xcodebuild -scheme AttributedText \
   test
 ```
 
+## Performance and layout regression checks
+
+`PerformanceLab/AttributedTextPerformance.xcodeproj` is a standalone iOS app and
+XCTest target that renders 200 dynamic rich-text rows. It records clock, CPU, and
+memory metrics for first layout and content updates, and checks the visible
+`UITextView` count and heights against `PerformanceBaselines/layout.json`.
+
+Run the complete XCTest plus Instruments Time Profiler workflow with a signed,
+connected iPhone. The command retains the simulator XCTest metrics and records
+the Time Profiler trace on the iPhone. Provide the device name shown by
+`xcrun xctrace list devices`:
+
+```bash
+PERFORMANCE_INSTRUMENTS_DEVICE_NAME='My iPhone' Scripts/run-performance.sh
+```
+
+Set `INSTRUMENTS_DURATION=30` (or `30s`) to change the recording duration.
+
+It stores the `.xcresult`, XCTest metric JSON, `.trace`, and the Instruments table
+of contents under `PerformanceResults/`. It fails if Instruments cannot export a
+complete trace, so CI cannot mistake a partial recording for a pass.
+
+Compare two exported XCTest metric files with a 10% regression threshold (or pass
+another threshold as the third argument):
+
+```bash
+Scripts/compare-performance.py baseline/xctest-metrics.json candidate/xctest-metrics.json 10
+```
+
+After an intentional visual/layout change, regenerate the layout baseline on a
+simulator before committing it:
+
+```bash
+UPDATE_LAYOUT_BASELINE=1 xcodebuild test \
+  -project PerformanceLab/AttributedTextPerformance.xcodeproj \
+  -scheme AttributedTextPerformance \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
+```
+
 ## License
 
 MIT
