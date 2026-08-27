@@ -1,0 +1,338 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 60;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A00000000000000000000010 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000003 /* App.swift */; };
+		A00000000000000000000011 /* AttributedTextPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000004 /* AttributedTextPerformanceTests.swift */; };
+		A00000000000000000000012 /* AttributedText in Frameworks */ = {isa = PBXBuildFile; productRef = A00000000000000000000030 /* AttributedText */; };
+		A00000000000000000000013 /* AttributedText in Frameworks */ = {isa = PBXBuildFile; productRef = A00000000000000000000031 /* AttributedText */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A00000000000000000000033 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A00000000000000000000035 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A00000000000000000000028;
+			remoteInfo = AttributedTextPerformance;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		A00000000000000000000001 /* AttributedTextPerformance.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = AttributedTextPerformance.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A00000000000000000000002 /* AttributedTextPerformanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = AttributedTextPerformanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A00000000000000000000003 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		A00000000000000000000004 /* AttributedTextPerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedTextPerformanceTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A00000000000000000000024 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A00000000000000000000012 /* AttributedText in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A00000000000000000000025 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A00000000000000000000013 /* AttributedText in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A00000000000000000000020 = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000021 /* AttributedTextPerformance */,
+				A00000000000000000000022 /* AttributedTextPerformanceTests */,
+				A00000000000000000000023 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A00000000000000000000021 /* AttributedTextPerformance */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000003 /* App.swift */,
+			);
+			path = AttributedTextPerformance;
+			sourceTree = "<group>";
+		};
+		A00000000000000000000022 /* AttributedTextPerformanceTests */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000004 /* AttributedTextPerformanceTests.swift */,
+			);
+			path = AttributedTextPerformanceTests;
+			sourceTree = "<group>";
+		};
+		A00000000000000000000023 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000001 /* AttributedTextPerformance.app */,
+				A00000000000000000000002 /* AttributedTextPerformanceTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A00000000000000000000028 /* AttributedTextPerformance */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A00000000000000000000040 /* Build configuration list for PBXNativeTarget "AttributedTextPerformance" */;
+			buildPhases = (
+				A00000000000000000000026 /* Sources */,
+				A00000000000000000000024 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AttributedTextPerformance;
+			packageProductDependencies = (
+				A00000000000000000000030 /* AttributedText */,
+			);
+			productName = AttributedTextPerformance;
+			productReference = A00000000000000000000001 /* AttributedTextPerformance.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A00000000000000000000029 /* AttributedTextPerformanceTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A00000000000000000000041 /* Build configuration list for PBXNativeTarget "AttributedTextPerformanceTests" */;
+			buildPhases = (
+				A00000000000000000000027 /* Sources */,
+				A00000000000000000000025 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A00000000000000000000034 /* PBXTargetDependency */,
+			);
+			name = AttributedTextPerformanceTests;
+			packageProductDependencies = (
+				A00000000000000000000031 /* AttributedText */,
+			);
+			productName = AttributedTextPerformanceTests;
+			productReference = A00000000000000000000002 /* AttributedTextPerformanceTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A00000000000000000000035 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 2660;
+				LastUpgradeCheck = 2660;
+				TargetAttributes = {
+					A00000000000000000000028 = {
+						CreatedOnToolsVersion = 26.6;
+					};
+					A00000000000000000000029 = {
+						CreatedOnToolsVersion = 26.6;
+						TestTargetID = A00000000000000000000028;
+					};
+				};
+			};
+			buildConfigurationList = A00000000000000000000042 /* Build configuration list for PBXProject "AttributedTextPerformance" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A00000000000000000000020;
+			packageReferences = (
+				A00000000000000000000032 /* XCLocalSwiftPackageReference ".." */,
+			);
+			productRefGroup = A00000000000000000000023 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A00000000000000000000028 /* AttributedTextPerformance */,
+				A00000000000000000000029 /* AttributedTextPerformanceTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A00000000000000000000026 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A00000000000000000000010 /* App.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A00000000000000000000027 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A00000000000000000000011 /* AttributedTextPerformanceTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A00000000000000000000034 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A00000000000000000000028 /* AttributedTextPerformance */;
+			targetProxy = A00000000000000000000033 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		A00000000000000000000050 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CODE_SIGNING_ALLOWED = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FBQ6Z8AF3U;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.noppe.AttributedTextPerformance;
+				PRODUCT_NAME = AttributedTextPerformance;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A00000000000000000000051 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CODE_SIGNING_ALLOWED = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FBQ6Z8AF3U;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.noppe.AttributedTextPerformance;
+				PRODUCT_NAME = AttributedTextPerformance;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A00000000000000000000052 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGNING_ALLOWED = NO;
+				DEVELOPMENT_TEAM = FBQ6Z8AF3U;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.noppe.AttributedTextPerformanceTests;
+				PRODUCT_NAME = AttributedTextPerformanceTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AttributedTextPerformance.app/AttributedTextPerformance";
+			};
+			name = Debug;
+		};
+		A00000000000000000000053 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGNING_ALLOWED = NO;
+				DEVELOPMENT_TEAM = FBQ6Z8AF3U;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.noppe.AttributedTextPerformanceTests;
+				PRODUCT_NAME = AttributedTextPerformanceTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AttributedTextPerformance.app/AttributedTextPerformance";
+			};
+			name = Release;
+		};
+		A00000000000000000000054 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Debug;
+		};
+		A00000000000000000000055 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A00000000000000000000040 /* Build configuration list for PBXNativeTarget "AttributedTextPerformance" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A00000000000000000000050 /* Debug */,
+				A00000000000000000000051 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A00000000000000000000041 /* Build configuration list for PBXNativeTarget "AttributedTextPerformanceTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A00000000000000000000052 /* Debug */,
+				A00000000000000000000053 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A00000000000000000000042 /* Build configuration list for PBXProject "AttributedTextPerformance" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A00000000000000000000054 /* Debug */,
+				A00000000000000000000055 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		A00000000000000000000032 /* XCLocalSwiftPackageReference ".." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ..;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A00000000000000000000030 /* AttributedText */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A00000000000000000000032 /* XCLocalSwiftPackageReference ".." */;
+			productName = AttributedText;
+		};
+		A00000000000000000000031 /* AttributedText */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A00000000000000000000032 /* XCLocalSwiftPackageReference ".." */;
+			productName = AttributedText;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = A00000000000000000000035 /* Project object */;
+}

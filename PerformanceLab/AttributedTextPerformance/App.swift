@@ -1,0 +1,49 @@
+import AttributedText
+import SwiftUI
+
+@main
+struct AttributedTextPerformanceApp: App {
+    var body: some Scene {
+        WindowGroup {
+            PerformanceScene()
+        }
+    }
+}
+
+private struct PerformanceScene: View {
+    @State private var tick = 0
+
+    var body: some View {
+        ScrollView {
+            LazyVStack(alignment: .leading, spacing: 10) {
+                ForEach(0..<200, id: \.self) { index in
+                    AttributedText(PerformanceFixtures.message(index: index, tick: tick))
+                        .font(.body)
+                        .lineSpacing(3)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .accessibilityIdentifier("performance.row.\(index)")
+                }
+            }
+            .padding(16)
+        }
+        .accessibilityIdentifier("performance.scroll")
+        .task {
+            guard ProcessInfo.processInfo.arguments.contains("-performanceScenario") else { return }
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .milliseconds(250))
+                tick &+= 1
+            }
+        }
+    }
+}
+
+enum PerformanceFixtures {
+    static func message(index: Int, tick: Int = 0) -> AttributedString {
+        var message = AttributedString(
+            "Row \(index) / revision \(tick): AttributedText renders mixed English and 日本語 text. " +
+            "This deliberately long line exercises wrapping, paragraph attributes, and repeated layout."
+        )
+        message.foregroundColor = .label
+        return message
+    }
+}
