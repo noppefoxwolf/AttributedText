@@ -92,11 +92,12 @@ public struct AttributedText: UIViewRepresentable {
             @unknown default:
                 break
             }
-            content = content.applyingDefaultFont(uiView.font)
-            content = content.applyingDefaultForegroundColor(uiView.textColor)
-            content = content.applyingTextAlignment(environment.multilineTextAlignment.textAlignment)
-            content = content.applyingLineSpacing(environment.lineSpacing)
-            content = content.applyingDefaultLineBreakStrategy()
+            content = content.applyingResolvedTextAttributes(
+                defaultFont: uiView.font,
+                defaultForegroundColor: uiView.textColor,
+                textAlignment: environment.multilineTextAlignment.textAlignment,
+                lineSpacing: environment.lineSpacing
+            )
             uiView.attributedText = content
             uiView.renderedContentConfiguration = renderedContentConfiguration
         }

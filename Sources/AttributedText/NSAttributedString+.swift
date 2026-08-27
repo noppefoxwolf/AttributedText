@@ -2,6 +2,33 @@ import SwiftUI
 import UIKit
 
 extension NSAttributedString {
+    /// Applies the UIKit attributes that back SwiftUI.Text modifiers in one mutable copy.
+    /// The individual helpers remain available for focused transformations and tests.
+    func applyingResolvedTextAttributes(
+        defaultFont: UIFont?,
+        defaultForegroundColor: UIColor?,
+        textAlignment: NSTextAlignment,
+        lineSpacing: CGFloat
+    ) -> NSAttributedString {
+        guard length > 0 else { return self }
+
+        let result = NSMutableAttributedString(attributedString: self)
+        let range = NSRange(location: 0, length: result.length)
+        result.applyingDefaultAttribute(.font, value: defaultFont, in: range)
+        result.applyingDefaultAttribute(.foregroundColor, value: defaultForegroundColor, in: range)
+
+        let paragraphStyle = (result.attribute(.paragraphStyle, at: 0, effectiveRange: nil)
+            as? NSParagraphStyle)?.mutableCopy() as? NSMutableParagraphStyle
+            ?? NSMutableParagraphStyle()
+        paragraphStyle.alignment = textAlignment
+        if lineSpacing != 0 {
+            paragraphStyle.lineSpacing = lineSpacing
+        }
+        paragraphStyle.lineBreakStrategy = .standard
+        result.addAttribute(.paragraphStyle, value: paragraphStyle, range: range)
+        return result
+    }
+
     func applyingTextCase(_ textCase: Text.Case) -> NSAttributedString {
         let result = NSMutableAttributedString(attributedString: self)
         let transformed: String
@@ -98,5 +125,21 @@ extension NSAttributedString {
             result.addAttribute(.foregroundColor, value: color, range: range)
         }
         return result
+    }
+}
+
+private extension NSMutableAttributedString {
+    func applyingDefaultAttribute(_ key: NSAttributedString.Key, value: Any?, in range: NSRange) {
+        guard let value else { return }
+
+        var missingRanges: [NSRange] = []
+        enumerateAttribute(key, in: range) { existingValue, range, _ in
+            if existingValue == nil {
+                missingRanges.append(range)
+            }
+        }
+        for missingRange in missingRanges {
+            addAttribute(key, value: value, range: missingRange)
+        }
     }
 }
