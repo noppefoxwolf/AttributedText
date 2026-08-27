@@ -73,26 +73,33 @@ public struct AttributedText: UIViewRepresentable {
             newValue: .zero
         )
 
-        var content = NSAttributedString(attributedText)
-        switch environment.textCase {
-        case .uppercase:
-            content = content.applyingTextCase(.uppercase)
-        case .lowercase:
-            content = content.applyingTextCase(.lowercase)
-        case nil:
-            break
-        @unknown default:
-            break
-        }
-        content = content.applyingDefaultFont(uiView.font)
-        content = content.applyingDefaultForegroundColor(uiView.textColor)
-        content = content.applyingTextAlignment(environment.multilineTextAlignment.textAlignment)
-        content = content.applyingLineSpacing(environment.lineSpacing)
-        content = content.applyingDefaultLineBreakStrategy()
-        modify(
-            &uiView.attributedTextContent,
-            newValue: AttributedTextContent(content)
+        let renderedContentConfiguration = RenderedContentConfiguration(
+            attributedText: attributedText,
+            font: uiView.font,
+            textCase: environment.textCase,
+            textAlignment: environment.multilineTextAlignment.textAlignment,
+            lineSpacing: environment.lineSpacing
         )
+        if uiView.renderedContentConfiguration != renderedContentConfiguration {
+            var content = NSAttributedString(attributedText)
+            switch environment.textCase {
+            case .uppercase:
+                content = content.applyingTextCase(.uppercase)
+            case .lowercase:
+                content = content.applyingTextCase(.lowercase)
+            case nil:
+                break
+            @unknown default:
+                break
+            }
+            content = content.applyingDefaultFont(uiView.font)
+            content = content.applyingDefaultForegroundColor(uiView.textColor)
+            content = content.applyingTextAlignment(environment.multilineTextAlignment.textAlignment)
+            content = content.applyingLineSpacing(environment.lineSpacing)
+            content = content.applyingDefaultLineBreakStrategy()
+            uiView.attributedText = content
+            uiView.renderedContentConfiguration = renderedContentConfiguration
+        }
 
         modify(
             &uiView.extraActions,

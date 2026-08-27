@@ -1,5 +1,14 @@
 import Foundation
 import UIKit
+import SwiftUI
+
+struct RenderedContentConfiguration: Equatable {
+    let attributedText: AttributedString
+    let font: UIFont?
+    let textCase: Text.Case?
+    let textAlignment: NSTextAlignment
+    let lineSpacing: CGFloat
+}
 
 // 参照ポインタの違いなどで見た目が同じであるのにequalにならない事があるので自前で比較する
 final class AttributedTextContent: Equatable {
