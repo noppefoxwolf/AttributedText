@@ -11,13 +11,13 @@ struct AttributedTextPerformanceApp: App {
 }
 
 private struct PerformanceScene: View {
-    @State private var tick = 0
+    @State private var parentUpdateTick = 0
 
     var body: some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 10) {
                 ForEach(0..<200, id: \.self) { index in
-                    AttributedText(PerformanceFixtures.message(index: index, tick: tick))
+                    AttributedText(PerformanceFixtures.message(index: index))
                         .font(.body)
                         .lineSpacing(3)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -27,11 +27,12 @@ private struct PerformanceScene: View {
             .padding(16)
         }
         .accessibilityIdentifier("performance.scroll")
+        .accessibilityValue(parentUpdateTick.formatted())
         .task {
             guard ProcessInfo.processInfo.arguments.contains("-performanceScenario") else { return }
             while !Task.isCancelled {
                 try? await Task.sleep(for: .milliseconds(250))
-                tick &+= 1
+                parentUpdateTick &+= 1
             }
         }
     }

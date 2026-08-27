@@ -6,7 +6,7 @@ final class AttributedTextPerformanceTests: XCTestCase {
     @MainActor
     func testInitialLayoutPerformance() {
         measure(metrics: [XCTClockMetric(), XCTCPUMetric(), XCTMemoryMetric()]) {
-            let host = UIHostingController(rootView: benchmarkView(tick: 0))
+            let host = UIHostingController(rootView: benchmarkView(contentTick: 0, parentUpdateTick: 0))
             let window = attach(host)
             XCTAssertGreaterThan(host.view.bounds.height, 0)
             withExtendedLifetime(window) {}
@@ -15,10 +15,28 @@ final class AttributedTextPerformanceTests: XCTestCase {
 
     @MainActor
     func testRepeatedContentUpdatePerformance() {
-        let host = UIHostingController(rootView: benchmarkView(tick: 0))
+        let host = UIHostingController(rootView: benchmarkView(contentTick: 0, parentUpdateTick: 0))
         host.view.frame = CGRect(x: 0, y: 0, width: 390, height: 844)
         measure(metrics: [XCTClockMetric(), XCTCPUMetric(), XCTMemoryMetric()]) {
-            host.rootView = benchmarkView(tick: Int.random(in: 1...Int.max))
+            host.rootView = benchmarkView(
+                contentTick: Int.random(in: 1...Int.max),
+                parentUpdateTick: 0
+            )
+            host.view.setNeedsLayout()
+            host.view.layoutIfNeeded()
+            RunLoop.current.run(until: Date().addingTimeInterval(0.05))
+        }
+    }
+
+    @MainActor
+    func testRepeatedUnchangedContentUpdatePerformance() {
+        let host = UIHostingController(rootView: benchmarkView(contentTick: 0, parentUpdateTick: 0))
+        host.view.frame = CGRect(x: 0, y: 0, width: 390, height: 844)
+        measure(metrics: [XCTClockMetric(), XCTCPUMetric(), XCTMemoryMetric()]) {
+            host.rootView = benchmarkView(
+                contentTick: 0,
+                parentUpdateTick: Int.random(in: 1...Int.max)
+            )
             host.view.setNeedsLayout()
             host.view.layoutIfNeeded()
             RunLoop.current.run(until: Date().addingTimeInterval(0.05))
@@ -27,7 +45,7 @@ final class AttributedTextPerformanceTests: XCTestCase {
 
     @MainActor
     func testLayoutRegression() throws {
-        let host = UIHostingController(rootView: benchmarkView(tick: 0))
+        let host = UIHostingController(rootView: benchmarkView(contentTick: 0, parentUpdateTick: 0))
         let window = attach(host)
 
         let textViews = descendants(of: host.view).compactMap { $0 as? UITextView }
@@ -42,11 +60,11 @@ final class AttributedTextPerformanceTests: XCTestCase {
     }
 
     @MainActor
-    private func benchmarkView(tick: Int) -> some View {
+    private func benchmarkView(contentTick: Int, parentUpdateTick: Int) -> some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 10) {
                 ForEach(0..<200, id: \.self) { index in
-                    AttributedText(self.message(index: index, tick: tick))
+                    AttributedText(self.message(index: index, tick: contentTick))
                         .font(.body)
                         .lineSpacing(3)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -54,6 +72,7 @@ final class AttributedTextPerformanceTests: XCTestCase {
             }
             .padding(16)
         }
+        .accessibilityValue(parentUpdateTick.formatted())
     }
 
     @MainActor
