@@ -36,9 +36,7 @@ private struct ComparisonView: View {
                             .font(.title2)
                             .bold()
                     }, attributedText: {
-                        AttributedText(AttributedString("Title 2 / Bold"))
-                            .font(.title2)
-                            .bold()
+                        AttributedText(titleAttributedString)
                     })
 
                     comparison("Markdown attributes", swiftUI: {
@@ -47,22 +45,12 @@ private struct ComparisonView: View {
                         AttributedText(markdown)
                     })
 
-                    comparison("lineLimit + truncation", swiftUI: {
+                    comparison("lineLimit", swiftUI: {
                         Text(longText)
                             .lineLimit(1)
-                            .truncationMode(.tail)
                     }, attributedText: {
                         AttributedText(AttributedString(longText))
                             .lineLimit(1)
-                            .truncationMode(.tail)
-                    })
-
-                    comparison("multilineTextAlignment", swiftUI: {
-                        Text(multilineText)
-                            .multilineTextAlignment(.center)
-                    }, attributedText: {
-                        AttributedText(AttributedString(multilineText))
-                            .multilineTextAlignment(.center)
                     })
 
                     comparison("Attachment", swiftUI: {
@@ -128,6 +116,15 @@ private struct ComparisonView: View {
         var attributedString = AttributedString(value)
         attributedString.font = UIFont.preferredFont(forTextStyle: .body)
         attributedString.foregroundColor = UIColor.label
+        return attributedString
+    }
+
+    private var titleAttributedString: AttributedString {
+        var attributedString = AttributedString("Title 2 / Bold")
+        attributedString.font = UIFont.systemFont(
+            ofSize: UIFont.preferredFont(forTextStyle: .title2).pointSize,
+            weight: .bold
+        )
         return attributedString
     }
 

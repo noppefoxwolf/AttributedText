@@ -13,10 +13,7 @@ struct CacheTests {
         let key = Cache.Key(
             attributedString: AttributedString("Text"),
             targetSize: CGSize(width: 200, height: UIView.noIntrinsicMetric),
-            font: .body,
-            maximumNumberOfLines: 0,
-            lineBreakMode: .byWordWrapping,
-            textAlignment: .left
+            maximumNumberOfLines: 0
         )
         let size = CGSize(width: 123, height: 45)
 
@@ -46,10 +43,7 @@ struct CacheTests {
         Cache.Key(
             attributedString: AttributedString(text),
             targetSize: CGSize(width: 200, height: UIView.noIntrinsicMetric),
-            font: .body,
-            maximumNumberOfLines: 0,
-            lineBreakMode: .byWordWrapping,
-            textAlignment: .left
+            maximumNumberOfLines: 0
         )
     }
 }

@@ -1,5 +1,6 @@
 import AttributedText
 import SwiftUI
+import UIKit
 
 @main
 struct AttributedTextPerformanceApp: App {
@@ -18,7 +19,6 @@ private struct PerformanceScene: View {
             LazyVStack(alignment: .leading, spacing: 10) {
                 ForEach(0..<200, id: \.self) { index in
                     AttributedText(PerformanceFixtures.message(index: index))
-                        .font(.body)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .accessibilityIdentifier("performance.row.\(index)")
                 }
@@ -43,6 +43,7 @@ enum PerformanceFixtures {
             "Row \(index) / revision \(tick): AttributedText renders mixed English and 日本語 text. " +
             "This deliberately long line exercises wrapping and repeated layout."
         )
+        message.font = UIFont.preferredFont(forTextStyle: .body)
         message.foregroundColor = .label
         return message
     }

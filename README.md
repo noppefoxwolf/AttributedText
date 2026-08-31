@@ -26,20 +26,19 @@ https://github.com/noppefoxwolf/AttributedText.git
 ```swift
 import AttributedText
 import SwiftUI
+import UIKit
 
 struct ContentView: View {
     var body: some View {
         AttributedText(message)
-            .font(.body)
             .lineLimit(3)
-            .truncationMode(.tail)
-            .multilineTextAlignment(.leading)
     }
 
     private var message: AttributedString {
         var value = try! AttributedString(
             markdown: "**AttributedText** supports [links](https://apple.com)."
         )
+        value.font = UIFont.preferredFont(forTextStyle: .body)
         value.foregroundColor = .label
         return value
     }
@@ -54,16 +53,49 @@ AttributedText(AttributedString("Hello, World!"))
 
 ## SwiftUI.Text-compatible modifiers
 
-The following SwiftUI text modifiers are supported:
+The following SwiftUI text modifier is supported:
 
-- `font(_:)`
-- `bold()`
 - `lineLimit(_:)`
-- `truncationMode(_:)`
-- `multilineTextAlignment(_:)`
 
-When `lineLimit` is not specified, text wraps across multiple lines. `truncationMode` is applied when used together with `lineLimit`.
-`lineSpacing(_:)` and `textCase(_:)` are not applied because they require modifying the rendered `AttributedString`.
+When `lineLimit` is not specified, text wraps across multiple lines. `font(_:)`, `bold()`, `truncationMode(_:)`, `multilineTextAlignment(_:)`, `lineSpacing(_:)`, and `textCase(_:)` are not applied. Set font and paragraph attributes in the input `AttributedString` instead.
+
+## Where to configure text attributes
+
+`AttributedText` preserves the attributes in the input `AttributedString`. Configure values that belong to the paragraph or to the text content before passing the value to `AttributedText`:
+
+| Value | Configure on | Notes |
+| --- | --- | --- |
+| Paragraph alignment | `NSParagraphStyle.alignment` | Corresponds to `multilineTextAlignment(_:)`. |
+| Line break mode | `NSParagraphStyle.lineBreakMode` | Corresponds to `truncationMode(_:)`. |
+| Line spacing | `NSParagraphStyle.lineSpacing` | Corresponds to `lineSpacing(_:)`. |
+| Text case | The input string | Apply uppercasing or lowercasing before creating the `AttributedString`; `textCase(_:)` is not applied. |
+| Font and color | `AttributedString` attributes | Set these explicitly; font values are not supplied by the view. |
+
+The following value does not need to be added to the `AttributedString`:
+
+- `lineLimit(_:)` sets `UITextView.textContainer.maximumNumberOfLines`.
+
+For example, configure paragraph attributes through `NSParagraphStyle` like this:
+
+```swift
+let paragraphStyle = NSMutableParagraphStyle()
+paragraphStyle.alignment = .center
+paragraphStyle.lineBreakMode = .byTruncatingTail
+paragraphStyle.lineSpacing = 4
+
+let message = AttributedString(
+    NSAttributedString(
+        string: "A paragraph with custom layout",
+        attributes: [
+            .font: UIFont.preferredFont(forTextStyle: .body),
+            .paragraphStyle: paragraphStyle
+        ]
+    )
+)
+
+AttributedText(message)
+    .lineLimit(3)
+```
 
 ## Rich text and selection
 

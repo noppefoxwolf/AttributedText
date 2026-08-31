@@ -1,4 +1,5 @@
 public import SwiftUI
+public import AttributedTextView
 import UIKit
 import os
 
@@ -43,26 +44,9 @@ public struct AttributedText: UIViewRepresentable {
         context.coordinator.openURLAction = environment.openURL
         context.coordinator.textItemTagAction = environment.onTapTextItemTagAction
 
-        let lineBreakMode = environment.lineLimit == nil
-            ? NSLineBreakMode.byWordWrapping
-            : environment.truncationMode.lineBreakMode
-
-        // SwiftUI.Text compatibility
-        modify(
-            &uiView.font,
-            newValue: resolvedFont(for: environment.font, in: environment)
-        )
         modify(
             &uiView.textContainer.maximumNumberOfLines,
             newValue: environment.lineLimit ?? 0
-        )
-        modify(
-            &uiView.textContainer.lineBreakMode,
-            newValue: lineBreakMode
-        )
-        modify(
-            &uiView.textAlignment,
-            newValue: environment.multilineTextAlignment.textAlignment
         )
         if AttributedString(uiView.attributedText) != attributedText {
             uiView.attributedText = NSAttributedString(attributedText)
@@ -136,12 +120,7 @@ public struct AttributedText: UIViewRepresentable {
         let key = Cache.Key(
             attributedString: attributedText,
             targetSize: targetSize,
-            font: context.environment.font,
-            maximumNumberOfLines: context.environment.lineLimit ?? 0,
-            lineBreakMode: context.environment.lineLimit == nil
-                ? .byWordWrapping
-                : context.environment.truncationMode.lineBreakMode,
-            textAlignment: context.environment.multilineTextAlignment.textAlignment
+            maximumNumberOfLines: context.environment.lineLimit ?? 0
         )
         if let cache = Cache.shared.get(key) {
             return cache

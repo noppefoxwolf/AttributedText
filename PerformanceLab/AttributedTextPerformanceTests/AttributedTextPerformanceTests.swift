@@ -1,5 +1,6 @@
 import AttributedText
 import SwiftUI
+import UIKit
 import XCTest
 
 final class AttributedTextPerformanceTests: XCTestCase {
@@ -65,7 +66,6 @@ final class AttributedTextPerformanceTests: XCTestCase {
             LazyVStack(alignment: .leading, spacing: 10) {
                 ForEach(0..<200, id: \.self) { index in
                     AttributedText(self.message(index: index, tick: contentTick))
-                        .font(.body)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
@@ -95,6 +95,7 @@ final class AttributedTextPerformanceTests: XCTestCase {
             "Row \(index) / revision \(tick): AttributedText renders mixed English and 日本語 text. " +
             "This deliberately long line exercises wrapping and repeated layout."
         )
+        message.font = UIFont.preferredFont(forTextStyle: .body)
         message.foregroundColor = .label
         return message
     }

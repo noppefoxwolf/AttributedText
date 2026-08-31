@@ -1,4 +1,5 @@
 public import SwiftUI
+public import AttributedTextView
 import UIKit
 
 public struct OnTapTextItemTagAction: Sendable {
@@ -70,12 +71,6 @@ extension View {
     public func extraActions(_ extraActions: [UIAction]) -> some View {
         environment(\.extraActions, extraActions)
     }
-}
-
-public enum TextItemType: Sendable, CaseIterable {
-    case link
-    case textAttachment
-    case tag
 }
 
 extension EnvironmentValues {
