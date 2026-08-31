@@ -64,15 +64,6 @@ public struct AttributedText: UIViewRepresentable {
             &uiView.textAlignment,
             newValue: environment.multilineTextAlignment.textAlignment
         )
-        modify(
-            &uiView.textContainer.lineFragmentPadding,
-            newValue: 0
-        )
-        modify(
-            &uiView.textContainerInset,
-            newValue: .zero
-        )
-
         let renderedContentConfiguration = RenderedContentConfiguration(
             attributedText: attributedText,
             font: uiView.font,
@@ -192,5 +183,4 @@ public struct AttributedText: UIViewRepresentable {
     public func makeCoordinator() -> Coordinator {
         Coordinator()
     }
-
 }
