@@ -35,14 +35,14 @@ public struct AttributedText: UIViewRepresentable {
         uiView.adjustsFontForContentSizeCategory = true
         uiView.textColor = .label
 
-        context.coordinator.openURLAction = context.environment.openURL
-        context.coordinator.textItemTagAction = context.environment.onTapTextItemTagAction
-
         return uiView
     }
 
     public func updateUIView(_ uiView: AttributedTextView, context: Context) {
         let environment = context.environment
+        context.coordinator.openURLAction = environment.openURL
+        context.coordinator.textItemTagAction = environment.onTapTextItemTagAction
+
         let lineBreakMode = environment.lineLimit == nil
             ? NSLineBreakMode.byWordWrapping
             : environment.truncationMode.lineBreakMode
