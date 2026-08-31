@@ -112,8 +112,8 @@ public struct AttributedText: UIViewRepresentable {
         if copyAction.isEmpty {
             uiView.onCopy = nil
         } else {
-            uiView.onCopy = { selectedText in
-                copyAction(AttributedString(selectedText))
+            uiView.onCopy = { selectedAttributedText in
+                copyAction(AttributedString(selectedAttributedText))
             }
         }
 
