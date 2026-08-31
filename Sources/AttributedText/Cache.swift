@@ -19,8 +19,6 @@ final class Cache: Sendable {
         let maximumNumberOfLines: Int
         let lineBreakMode: NSLineBreakMode
         let textAlignment: NSTextAlignment
-        let lineSpacing: CGFloat
-        let textCase: Text.Case?
     }
 
     func set(_ key: Key, size: CGSize) {

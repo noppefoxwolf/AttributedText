@@ -47,14 +47,6 @@ private struct ComparisonView: View {
                         AttributedText(markdown)
                     })
 
-                    comparison("Multiline + lineSpacing", swiftUI: {
-                        Text(multilineText)
-                            .lineSpacing(8)
-                    }, attributedText: {
-                        AttributedText(AttributedString(multilineText))
-                            .lineSpacing(8)
-                    })
-
                     comparison("lineLimit + truncation", swiftUI: {
                         Text(longText)
                             .lineLimit(1)
@@ -63,14 +55,6 @@ private struct ComparisonView: View {
                         AttributedText(AttributedString(longText))
                             .lineLimit(1)
                             .truncationMode(.tail)
-                    })
-
-                    comparison("textCase", swiftUI: {
-                        Text("Uppercase and lowercase")
-                            .textCase(.uppercase)
-                    }, attributedText: {
-                        AttributedText(AttributedString("Uppercase and lowercase"))
-                            .textCase(.uppercase)
                     })
 
                     comparison("multilineTextAlignment", swiftUI: {

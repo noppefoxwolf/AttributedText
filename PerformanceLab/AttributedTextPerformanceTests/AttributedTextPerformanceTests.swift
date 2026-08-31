@@ -66,7 +66,6 @@ final class AttributedTextPerformanceTests: XCTestCase {
                 ForEach(0..<200, id: \.self) { index in
                     AttributedText(self.message(index: index, tick: contentTick))
                         .font(.body)
-                        .lineSpacing(3)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
@@ -94,7 +93,7 @@ final class AttributedTextPerformanceTests: XCTestCase {
     private func message(index: Int, tick: Int) -> AttributedString {
         var message = AttributedString(
             "Row \(index) / revision \(tick): AttributedText renders mixed English and 日本語 text. " +
-            "This deliberately long line exercises wrapping, paragraph attributes, and repeated layout."
+            "This deliberately long line exercises wrapping and repeated layout."
         )
         message.foregroundColor = .label
         return message

@@ -4,7 +4,6 @@ public final class AttributedTextView: UITextView {
     var extraActions: [UIAction] = []
     var allowsSelectionTextItems: [TextItemType] = TextItemType.allCases
     var onCopy: (@Sendable (NSAttributedString) -> Void)? = nil
-    var renderedContentConfiguration: RenderedContentConfiguration?
 
     public override func editMenu(for textRange: UITextRange, suggestedActions: [UIMenuElement])
         -> UIMenu?

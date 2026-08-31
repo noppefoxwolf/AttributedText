@@ -16,9 +16,7 @@ struct CacheTests {
             font: .body,
             maximumNumberOfLines: 0,
             lineBreakMode: .byWordWrapping,
-            textAlignment: .left,
-            lineSpacing: 0,
-            textCase: nil
+            textAlignment: .left
         )
         let size = CGSize(width: 123, height: 45)
 
@@ -51,9 +49,7 @@ struct CacheTests {
             font: .body,
             maximumNumberOfLines: 0,
             lineBreakMode: .byWordWrapping,
-            textAlignment: .left,
-            lineSpacing: 0,
-            textCase: nil
+            textAlignment: .left
         )
     }
 }

@@ -19,7 +19,6 @@ private struct PerformanceScene: View {
                 ForEach(0..<200, id: \.self) { index in
                     AttributedText(PerformanceFixtures.message(index: index))
                         .font(.body)
-                        .lineSpacing(3)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .accessibilityIdentifier("performance.row.\(index)")
                 }
@@ -42,7 +41,7 @@ enum PerformanceFixtures {
     static func message(index: Int, tick: Int = 0) -> AttributedString {
         var message = AttributedString(
             "Row \(index) / revision \(tick): AttributedText renders mixed English and 日本語 text. " +
-            "This deliberately long line exercises wrapping, paragraph attributes, and repeated layout."
+            "This deliberately long line exercises wrapping and repeated layout."
         )
         message.foregroundColor = .label
         return message

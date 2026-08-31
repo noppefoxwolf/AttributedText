@@ -64,33 +64,8 @@ public struct AttributedText: UIViewRepresentable {
             &uiView.textAlignment,
             newValue: environment.multilineTextAlignment.textAlignment
         )
-        let renderedContentConfiguration = RenderedContentConfiguration(
-            attributedText: attributedText,
-            font: uiView.font,
-            textCase: environment.textCase,
-            textAlignment: environment.multilineTextAlignment.textAlignment,
-            lineSpacing: environment.lineSpacing
-        )
-        if uiView.renderedContentConfiguration != renderedContentConfiguration {
-            var content = NSAttributedString(attributedText)
-            switch environment.textCase {
-            case .uppercase:
-                content = content.applyingTextCase(.uppercase)
-            case .lowercase:
-                content = content.applyingTextCase(.lowercase)
-            case nil:
-                break
-            @unknown default:
-                break
-            }
-            content = content.applyingResolvedTextAttributes(
-                defaultFont: uiView.font,
-                defaultForegroundColor: uiView.textColor,
-                textAlignment: environment.multilineTextAlignment.textAlignment,
-                lineSpacing: environment.lineSpacing
-            )
-            uiView.attributedText = content
-            uiView.renderedContentConfiguration = renderedContentConfiguration
+        if AttributedString(uiView.attributedText) != attributedText {
+            uiView.attributedText = NSAttributedString(attributedText)
         }
 
         modify(
@@ -166,9 +141,7 @@ public struct AttributedText: UIViewRepresentable {
             lineBreakMode: context.environment.lineLimit == nil
                 ? .byWordWrapping
                 : context.environment.truncationMode.lineBreakMode,
-            textAlignment: context.environment.multilineTextAlignment.textAlignment,
-            lineSpacing: context.environment.lineSpacing,
-            textCase: context.environment.textCase
+            textAlignment: context.environment.multilineTextAlignment.textAlignment
         )
         if let cache = Cache.shared.get(key) {
             return cache

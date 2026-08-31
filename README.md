@@ -34,7 +34,6 @@ struct ContentView: View {
             .lineLimit(3)
             .truncationMode(.tail)
             .multilineTextAlignment(.leading)
-            .lineSpacing(4)
     }
 
     private var message: AttributedString {
@@ -62,10 +61,9 @@ The following SwiftUI text modifiers are supported:
 - `lineLimit(_:)`
 - `truncationMode(_:)`
 - `multilineTextAlignment(_:)`
-- `lineSpacing(_:)`
-- `textCase(_:)`
 
 When `lineLimit` is not specified, text wraps across multiple lines. `truncationMode` is applied when used together with `lineLimit`.
+`lineSpacing(_:)` and `textCase(_:)` are not applied because they require modifying the rendered `AttributedString`.
 
 ## Rich text and selection
 
