@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A00000000000000000000010 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000003 /* App.swift */; };
+		A00000000000000000000010 /* AttributedTextPerformanceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000003 /* AttributedTextPerformanceApp.swift */; };
 		A00000000000000000000011 /* AttributedTextPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000004 /* AttributedTextPerformanceTests.swift */; };
 		A00000000000000000000012 /* AttributedText in Frameworks */ = {isa = PBXBuildFile; productRef = A00000000000000000000030 /* AttributedText */; };
 		A00000000000000000000013 /* AttributedText in Frameworks */ = {isa = PBXBuildFile; productRef = A00000000000000000000031 /* AttributedText */; };
@@ -26,7 +26,7 @@
 /* Begin PBXFileReference section */
 		A00000000000000000000001 /* AttributedTextPerformance.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = AttributedTextPerformance.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A00000000000000000000002 /* AttributedTextPerformanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = AttributedTextPerformanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A00000000000000000000003 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		A00000000000000000000003 /* AttributedTextPerformanceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedTextPerformanceApp.swift; sourceTree = "<group>"; };
 		A00000000000000000000004 /* AttributedTextPerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedTextPerformanceTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -62,7 +62,7 @@
 		A00000000000000000000021 /* AttributedTextPerformance */ = {
 			isa = PBXGroup;
 			children = (
-				A00000000000000000000003 /* App.swift */,
+				A00000000000000000000003 /* AttributedTextPerformanceApp.swift */,
 			);
 			path = AttributedTextPerformance;
 			sourceTree = "<group>";
@@ -171,7 +171,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A00000000000000000000010 /* App.swift in Sources */,
+				A00000000000000000000010 /* AttributedTextPerformanceApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
