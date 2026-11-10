@@ -4,8 +4,9 @@ import UIKit
 final class Cache: Sendable {
     static let shared = Cache()
     private let capacity: Int
-    private var storage: [Key: CGSize] = [:]
-    private var leastRecentlyUsedKeys: [Key] = []
+    private var storage: [Key: Entry] = [:]
+    private var oldest: Entry?
+    private var newest: Entry?
 
     init(capacity: Int = 1_024) {
         self.capacity = max(1, capacity)
@@ -17,25 +18,59 @@ final class Cache: Sendable {
         let maximumNumberOfLines: Int
     }
 
-    func set(_ key: Key, size: CGSize) {
-        if storage[key] == nil, storage.count == capacity, let oldestKey = leastRecentlyUsedKeys.first {
-            storage[oldestKey] = nil
-            leastRecentlyUsedKeys.removeFirst()
+    private final class Entry {
+        let key: Key
+        var size: CGSize
+        weak var previous: Entry?
+        var next: Entry?
+
+        init(key: Key, size: CGSize) {
+            self.key = key
+            self.size = size
         }
-        storage[key] = size
-        touch(key)
+    }
+
+    func set(_ key: Key, size: CGSize) {
+        if let entry = storage[key] {
+            entry.size = size
+            touch(entry)
+            return
+        }
+        if storage.count == capacity, let entry = oldest {
+            storage.removeValue(forKey: entry.key)
+            oldest = entry.next
+            oldest?.previous = nil
+            if newest === entry { newest = nil }
+            entry.next = nil
+        }
+        let entry = Entry(key: key, size: size)
+        storage[key] = entry
+        append(entry)
     }
 
     func get(_ key: Key) -> CGSize? {
-        guard let size = storage[key] else { return nil }
-        touch(key)
-        return size
+        guard let entry = storage[key] else { return nil }
+        touch(entry)
+        return entry.size
     }
 
-    private func touch(_ key: Key) {
-        if let index = leastRecentlyUsedKeys.firstIndex(of: key) {
-            leastRecentlyUsedKeys.remove(at: index)
+    private func touch(_ entry: Entry) {
+        guard newest !== entry else { return }
+        if let previous = entry.previous {
+            previous.next = entry.next
+        } else {
+            oldest = entry.next
         }
-        leastRecentlyUsedKeys.append(key)
+        entry.next?.previous = entry.previous
+        entry.previous = nil
+        entry.next = nil
+        append(entry)
+    }
+
+    private func append(_ entry: Entry) {
+        entry.previous = newest
+        newest?.next = entry
+        if oldest == nil { oldest = entry }
+        newest = entry
     }
 }
