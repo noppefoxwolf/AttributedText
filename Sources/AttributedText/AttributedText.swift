@@ -48,8 +48,9 @@ public struct AttributedText: UIViewRepresentable {
             &uiView.textContainer.maximumNumberOfLines,
             newValue: environment.lineLimit ?? 0
         )
-        if AttributedString(uiView.attributedText) != attributedText {
-            uiView.attributedText = NSAttributedString(attributedText)
+        let updatedText = NSAttributedString(attributedText)
+        if Self.needsTextUpdate(current: uiView.attributedText, updated: updatedText) {
+            uiView.attributedText = updatedText
         }
 
         modify(
@@ -94,6 +95,14 @@ public struct AttributedText: UIViewRepresentable {
         if value != newValue {
             value = newValue
         }
+    }
+
+    static func needsTextUpdate(
+        current: NSAttributedString?,
+        updated: NSAttributedString
+    ) -> Bool {
+        guard let current else { return true }
+        return !updated.isEqual(to: current)
     }
 
     public func sizeThatFits(
