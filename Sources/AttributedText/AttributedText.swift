@@ -49,13 +49,7 @@ public struct AttributedText: UIViewRepresentable {
             newValue: environment.lineLimit ?? 0
         )
         if AttributedString(uiView.attributedText) != attributedText {
-            let text = NSAttributedString(attributedText)
-            if context.coordinator.hasAssignedText {
-                uiView.attributedText = text
-            } else {
-                uiView.setInitialAttributedText(text)
-                context.coordinator.hasAssignedText = true
-            }
+            uiView.setAttributedTextLightweight(NSAttributedString(attributedText))
         }
 
         modify(
@@ -144,17 +138,16 @@ public struct AttributedText: UIViewRepresentable {
 }
 
 private extension UITextView {
-    func setInitialAttributedText(_ text: NSAttributedString) {
-        let storage = textStorage
-        guard storage.length == 0, text.length > 0,
-            let contentManager = textLayoutManager?.textContentManager
-        else {
+    func setAttributedTextLightweight(_ text: NSAttributedString) {
+        guard let contentManager = textLayoutManager?.textContentManager else {
             attributedText = text
             return
         }
 
+        let storage = textStorage
         contentManager.performEditingTransaction {
-            storage.replaceCharacters(in: NSRange(location: 0, length: 0), with: text)
+            storage.replaceCharacters(in: NSRange(location: 0, length: storage.length), with: text)
         }
+        selectedRange = NSRange(location: storage.length, length: 0)
     }
 }

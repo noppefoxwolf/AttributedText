@@ -3,7 +3,6 @@ import UIKit
 
 extension AttributedText {
     public final class Coordinator: NSObject, UITextViewDelegate {
-        var hasAssignedText = false
         var openURLAction: OpenURLAction? = nil
         var textItemTagAction = OnTapTextItemTagAction()
 
