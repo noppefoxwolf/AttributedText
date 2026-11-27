@@ -49,7 +49,7 @@ public struct AttributedText: UIViewRepresentable {
             newValue: environment.lineLimit ?? 0
         )
         if AttributedString(uiView.attributedText) != attributedText {
-            uiView.attributedText = NSAttributedString(attributedText)
+            uiView.setAttributedTextLightweight(NSAttributedString(attributedText))
         }
 
         modify(
@@ -134,5 +134,20 @@ public struct AttributedText: UIViewRepresentable {
 
     public func makeCoordinator() -> Coordinator {
         Coordinator()
+    }
+}
+
+private extension UITextView {
+    func setAttributedTextLightweight(_ text: NSAttributedString) {
+        guard let contentManager = textLayoutManager?.textContentManager else {
+            attributedText = text
+            return
+        }
+
+        let storage = textStorage
+        contentManager.performEditingTransaction {
+            storage.replaceCharacters(in: NSRange(location: 0, length: storage.length), with: text)
+        }
+        selectedRange = NSRange(location: storage.length, length: 0)
     }
 }

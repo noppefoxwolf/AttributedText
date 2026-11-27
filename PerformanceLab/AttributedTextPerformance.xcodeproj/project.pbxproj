@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		A00000000000000000000010 /* AttributedTextPerformanceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000003 /* AttributedTextPerformanceApp.swift */; };
 		A00000000000000000000011 /* AttributedTextPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000004 /* AttributedTextPerformanceTests.swift */; };
+		A00000000000000000000014 /* UIKitBehaviorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000005 /* UIKitBehaviorTests.swift */; };
 		A00000000000000000000012 /* AttributedText in Frameworks */ = {isa = PBXBuildFile; productRef = A00000000000000000000030 /* AttributedText */; };
 		A00000000000000000000013 /* AttributedText in Frameworks */ = {isa = PBXBuildFile; productRef = A00000000000000000000031 /* AttributedText */; };
 /* End PBXBuildFile section */
@@ -28,6 +29,7 @@
 		A00000000000000000000002 /* AttributedTextPerformanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = AttributedTextPerformanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A00000000000000000000003 /* AttributedTextPerformanceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedTextPerformanceApp.swift; sourceTree = "<group>"; };
 		A00000000000000000000004 /* AttributedTextPerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedTextPerformanceTests.swift; sourceTree = "<group>"; };
+		A00000000000000000000005 /* UIKitBehaviorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitBehaviorTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				A00000000000000000000004 /* AttributedTextPerformanceTests.swift */,
+				A00000000000000000000005 /* UIKitBehaviorTests.swift */,
 			);
 			path = AttributedTextPerformanceTests;
 			sourceTree = "<group>";
@@ -180,6 +183,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A00000000000000000000011 /* AttributedTextPerformanceTests.swift in Sources */,
+				A00000000000000000000014 /* UIKitBehaviorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

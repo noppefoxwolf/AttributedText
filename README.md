@@ -154,6 +154,8 @@ xcodebuild -scheme AttributedText \
 
 ## Performance and layout regression checks
 
+See [UIHostingConfiguration reuse in timeline cells](docs/uihostingconfiguration-reuse.md) for the UIKit lifecycle tests and measurement-cache behavior.
+
 `PerformanceLab/AttributedTextPerformance.xcodeproj` is a standalone iOS app and
 XCTest target that renders 200 dynamic rich-text rows. It records clock, CPU, and
 memory metrics for first layout and content updates, and checks the visible
